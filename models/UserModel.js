@@ -6,32 +6,42 @@
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
 
-const userModel = mongoose.Schema({
-  fullName: {
-    type: String,
-    required: true,
+const userModel = mongoose.Schema(
+  {
+    googleId: {
+      type: String,
+    },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    mobileNumber: {
+      type: String,
+      required: true,
+    },
+    pic: {
+      type: String,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+    },
+    role: {
+      type: String,
+      default: "user",
+    },
+    refreshToken: {
+      type: String,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  mobileNumber: {
-    type: String,
-    required: true,
-  },
-  pic: {
-    type: String,
-    default:
-      "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-  },
-
-},
-    {timeStamps:true}
+  { timeStamps: true }
 );
 
 //method to check the password of the user during login

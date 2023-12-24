@@ -1,18 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const passport = require('passport');
+
 //importing controllers
-const {registerUser,authUser} = require('../controllers/userControllers');
+const { registerUser, loginUser, getAllUsers, getAUserById, deleteUser, updateUser, handleRefreshToken ,logout} = require("../controllers/userControllers");
 
-router.route('/register').post(registerUser);
-router.post('/login',authUser);
+//for authentication and admin purpose
+const {authMiddleware,isAdmin} = require("../middleware/authMiddleware");
 
-//Google sign up
-router.get('/google/signup',passport.authenticate('google',{scope:['profile','email']}));
-router.get('/google/signup/callback',passport.authenticate('google',{failureRedirect:'/login'}),(req,res)=>{
-    //successful Google Sign-In
-    res.redirect('/'); //Redirecting to the page    
-
-});
+router
+  .post("/register", registerUser)
+  .post("/login", loginUser)
+  .get('/all-users',authMiddleware,isAdmin,getAllUsers)
+  .get('/:id',authMiddleware,isAdmin,getAUserById)
+  .delete("/:id",authMiddleware,isAdmin,deleteUser)
+  .put('/:id',authMiddleware,updateUser)
+  .get('/handleRefresh',handleRefreshToken)
+  .get('/logout',logout)
 
 module.exports = router;
